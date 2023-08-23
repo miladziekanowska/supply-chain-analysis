@@ -2,7 +2,7 @@
 
 
 This repository contains my analysis of Supply Chain data.  
-Data provided in this analysis has been borrowed from this dataset on [Kaggle](https://www.kaggle.com/datasets/harshsingh2209/supply-chain-analysis). This dataset contains data from Fashion and Beauty startup and is a supply chain of Make-up products.
+Data provided in this analysis has been borrowed from this dataset on [Kaggle](https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis).
 
 ## Why this analysis?
 Supply chain analytics are one of the essential elements when making decisions in many fields, such as retail, procurment, logistics and farming. In this process I will be analyzing and interpreting the movement of products and it's customers preferences in order to give a good, data-driven insight at the stong points and weaker spots of supply chain and demand. 
