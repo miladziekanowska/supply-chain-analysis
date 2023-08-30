@@ -67,4 +67,4 @@ df['Target shipping days'] = df['Days for shipping (real)'] - df['Days for shipm
 
 
 # save the final df
-df.to_parquet('data/supply_chain_df_cleaned.parquet', index=False)
+df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
