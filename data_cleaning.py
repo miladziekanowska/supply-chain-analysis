@@ -50,21 +50,23 @@ df = df.rename(columns={'shipping date (DateOrders)': 'Shipping date',
 
 df['Shipping date'] = pd.to_datetime(df['Shipping date'],errors = 'coerce', dayfirst=True)
 df['Order date'] = pd.to_datetime(df['Order date'],errors = 'coerce', dayfirst=True)
-
-df['Shipping time'] = pd.to_datetime(df['Shipping date'].dt.strftime('%H:%M'), errors = 'coerce', dayfirst=True)
-df['Shipping day'] = pd.to_datetime(df['Shipping date'].dt.date,errors = 'coerce', dayfirst=True)
+# tu są jakieś błędy!
+df['Shipping time'] = pd.to_datetime(df['Shipping date'], format='%H:%M')
 df['Shipping day'] = df['Shipping date'].dt.day_name()
 
-df['Order time'] = pd.to_datetime(df['Order date'].dt.strftime('%H:%M'),errors = 'coerce', dayfirst=True)
-df['Order day'] = pd.to_datetime(df['Order date'].dt.date,errors = 'coerce', dayfirst=True)
+
+df['Order time'] = pd.to_datetime(df['Order date'], format='%H:%M')
 df['Order day'] = df['Order date'].dt.day_name()
 
-df = df.drop(['Shipping date', 'Order date'], axis=1)
 
 # feature engineering -> create a column representing the difference between expected and realistic shipping time
 
 df['Target shipping days'] = df['Days for shipping (real)'] - df['Days for shipment (scheduled)']
+df = df.drop(['Days for shipping (real)', 'Days for shipment (scheduled)'], axis=1)
 
+# changing the datatype for numeric valeus that should not be calculated
+id_values = ['Category Id', 'Customer Id','Department Id', 'Order Id', 'Order Item Id', 'Product Card Id']
+df[id_values] = df[id_values].astype('category')
 
 # save the final df
 df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
