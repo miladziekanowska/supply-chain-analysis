@@ -1,15 +1,12 @@
 # import liblaries
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import plotly.express as px
-import statsmodels.api as sm
+import pickle
 
-# load in the data
-df = pd.read_csv('data/DataCoSupplyChainDataset.csv', sep=';')
+# load in the data (available on Kaggle in readme, could not fit my repository, I am using locally)
+df = pd.read_parquet("data/DataCoSupplyChainDataset.parquet")
 
-# create dictionaries encoded data
+# create dictionaries encoded data and save to file
 def create_dictionary(df, column1, column2):
     dict_name = {}
     for i, j in zip(df[column1].unique(), df[column2].unique()):
@@ -20,10 +17,15 @@ product_name = create_dictionary(df, 'Product Card Id', 'Product Name')
 department_name = create_dictionary(df, 'Department Id', 'Department Name')
 category_name = create_dictionary(df, 'Category Id', 'Category Name')
 
+with open('data/supply_chain_dictionaties.pkl', 'wb') as f:
+    pickle.dump((product_name, department_name, category_name), f)
+
 # create locations dataset
 store_locations_df = pd.DataFrame({'Latitude': df['Latitude'],
                                    'Longitude': df['Longitude']})
 store_locations_df = store_locations_df.drop_duplicates()
+
+store_locations_df.to_parquet('data/store_locations.parquet', index=False)
 
 
 # delete unnessesary columns
@@ -33,19 +35,15 @@ df = df.drop(['Customer Email', 'Customer Fname', 'Customer Lname',
               'Product Category Id', 'Category Name', 'Department Name',
               'Order Customer Id','Order Item Cardprod Id', 'Product Name',
              'Latitude', 'Longitude', 'Delivery Status', 'Late_delivery_risk',
-             'Order City', 'Sales', 'Product Status'], axis=1)
+             'Order City', 'Product Status', 'Order State'], axis=1)
 
 # rounding up the large float values 
-decimals = pd.Series([3, 3, 3, 3, 3], index=['Benefit per order', 'Sales per customer', 'Order Item Discount', 'Order Item Total',
-            'Order Profit Per Order'])
+decimals = pd.Series([3, 3, 3, 3, 3], index=['Benefit per order', 'Sales per customer', 
+                                             'Order Item Discount', 'Order Item Total',
+                                             'Order Profit Per Order'])
 df = df.round(decimals)
 
 # dealing with datetime columns 
-""" 
-NOTE: This part would take place with the data cleaning, however due to the size of the file it would exceed github's
-      requirements and not be uploaded. When working on local directory, please uncomment this part and use with 
-      the data cleaning.
-      
 
 df = df.rename(columns={'shipping date (DateOrders)': 'Shipping date',
                        'order date (DateOrders)': 'Order date'})
@@ -67,7 +65,6 @@ df = df.drop(['Shipping date', 'Order date'], axis=1)
 
 df['Target shipping days'] = df['Days for shipping (real)'] - df['Days for shipment (scheduled)']
 
-"""
 
-
-df.to_csv('data/supply_chain_cleaned.csv')
+# save the final df
+df.to_parquet('data/supply_chain_df_cleaned.parquet', index=False)
