@@ -34,7 +34,7 @@ df = df.drop(['Customer Email', 'Customer Fname', 'Customer Lname',
               'Order Zipcode', 'Product Description', 'Product Image',
               'Product Category Id', 'Category Name', 'Department Name',
               'Order Customer Id','Order Item Cardprod Id', 'Product Name',
-             'Latitude', 'Longitude', 'Delivery Status', 'Late_delivery_risk',
+             'Latitude', 'Longitude', 'Delivery Status',
              'Order City', 'Product Status', 'Order State'], axis=1)
 
 # rounding up the large float values 
@@ -43,6 +43,7 @@ decimals = pd.Series([3, 3, 3, 3, 3], index=['Benefit per order', 'Sales per cus
                                              'Order Profit Per Order'])
 df = df.round(decimals)
 
+
 # dealing with datetime columns 
 
 df = df.rename(columns={'shipping date (DateOrders)': 'Shipping date',
@@ -50,13 +51,22 @@ df = df.rename(columns={'shipping date (DateOrders)': 'Shipping date',
 
 df['Shipping date'] = pd.to_datetime(df['Shipping date'],errors = 'coerce', dayfirst=True)
 df['Order date'] = pd.to_datetime(df['Order date'],errors = 'coerce', dayfirst=True)
-# tu są jakieś błędy!
+
+df['Order time'] = pd.to_datetime(df['Order date'], format='%H:%M')
+df['Order day'] = df['Order date'].dt.day_name()
+
 df['Shipping time'] = pd.to_datetime(df['Shipping date'], format='%H:%M')
 df['Shipping day'] = df['Shipping date'].dt.day_name()
 
 
-df['Order time'] = pd.to_datetime(df['Order date'], format='%H:%M')
-df['Order day'] = df['Order date'].dt.day_name()
+# changing the datatype for numeric valeus that should not be calculated
+id_values = ['Category Id', 'Customer Id','Department Id', 
+             'Order Id', 'Order Item Id', 'Product Card Id',
+            'Type', 'Customer Country', 'Customer Segment',
+            'Market', 'Order Status', 'Shipping Mode',
+            'Shipping day', 'Order day']
+
+df[id_values] = df[id_values].astype('category')
 
 
 # feature engineering -> create a column representing the difference between expected and realistic shipping time
@@ -64,9 +74,10 @@ df['Order day'] = df['Order date'].dt.day_name()
 df['Target shipping days'] = df['Days for shipping (real)'] - df['Days for shipment (scheduled)']
 df = df.drop(['Days for shipping (real)', 'Days for shipment (scheduled)'], axis=1)
 
-# changing the datatype for numeric valeus that should not be calculated
-id_values = ['Category Id', 'Customer Id','Department Id', 'Order Id', 'Order Item Id', 'Product Card Id']
-df[id_values] = df[id_values].astype('category')
+
+# rename one of critical information (the whole Order Country is in Spanish, but we will then threat all equally)
+df['Customer Country'] = df['Customer Country'].replace({'EE. UU.' : 'United States'})
+
 
 # save the final df
 df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
