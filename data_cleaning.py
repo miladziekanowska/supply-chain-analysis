@@ -34,8 +34,9 @@ df = df.drop(['Customer Email', 'Customer Fname', 'Customer Lname',
               'Order Zipcode', 'Product Description', 'Product Image',
               'Product Category Id', 'Category Name', 'Department Name',
               'Order Customer Id','Order Item Cardprod Id', 'Product Name',
-             'Latitude', 'Longitude', 'Delivery Status',
-             'Order City', 'Product Status', 'Order State'], axis=1)
+             'Latitude', 'Longitude', 'Delivery Status', 'Order Profit Per Order',
+              'Order Item Total', 'Order Item Product Price',
+              'Order City', 'Product Status', 'Order State'], axis=1)
 
 # rounding up the large float values 
 decimals = pd.Series([3, 3, 3, 3, 3], index=['Benefit per order', 'Sales per customer', 
@@ -77,6 +78,7 @@ df = df.drop(['Days for shipping (real)', 'Days for shipment (scheduled)'], axis
 
 # rename one of critical information (the whole Order Country is in Spanish, but we will then threat all equally)
 df['Customer Country'] = df['Customer Country'].replace({'EE. UU.' : 'United States'})
+
 
 
 # save the final df
