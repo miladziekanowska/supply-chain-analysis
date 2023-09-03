@@ -80,6 +80,14 @@ df = df.drop(['Days for shipping (real)', 'Days for shipment (scheduled)'], axis
 df['Customer Country'] = df['Customer Country'].replace({'EE. UU.' : 'United States'})
 
 
+# rename columns, so that these do not have spaces
+replace_dict = {}
 
-# save the final df
+for c in df.columns:
+    if c not in replace_dict.keys():
+        replace_dict[c] = c.replace(' ', '_')
+        
+df = df.rename(columns=replace_dict)
+
+# save new dataset
 df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
