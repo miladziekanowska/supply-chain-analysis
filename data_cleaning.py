@@ -5,6 +5,8 @@ import pickle
 
 # load in the data (available on Kaggle in readme, could not fit my repository, I am using locally)
 df = pd.read_parquet("data/DataCoSupplyChainDataset.parquet")
+df = df.sort_values(by='order date (DateOrders)')
+df = df.reset_index(drop=True)
 
 # create dictionaries encoded data and save to file
 def create_dictionary(df, column1, column2):
@@ -47,11 +49,8 @@ df = df.round(decimals)
 
 # dealing with datetime columns 
 
-df = df.rename(columns={'shipping date (DateOrders)': 'Shipping date',
-                       'order date (DateOrders)': 'Order date'})
-
-df['Shipping date'] = pd.to_datetime(df['Shipping date'],errors = 'coerce', dayfirst=True)
-df['Order date'] = pd.to_datetime(df['Order date'],errors = 'coerce', dayfirst=True)
+df['Shipping date'] = pd.to_datetime(df['shipping date (DateOrders)'],errors = 'coerce', dayfirst=True)
+df['Order date'] = pd.to_datetime(df['order date (DateOrders)'],errors = 'coerce', dayfirst=True)
 
 df['Order time'] = pd.to_datetime(df['Order date'], format='%H:%M')
 df['Order day'] = df['Order date'].dt.day_name()
@@ -59,6 +58,7 @@ df['Order day'] = df['Order date'].dt.day_name()
 df['Shipping time'] = pd.to_datetime(df['Shipping date'], format='%H:%M')
 df['Shipping day'] = df['Shipping date'].dt.day_name()
 
+df = df.drop(['shipping date (DateOrders)', 'order date (DateOrders)'], axis=1)
 
 # changing the datatype for numeric valeus that should not be calculated
 id_values = ['Category Id', 'Customer Id','Department Id', 
