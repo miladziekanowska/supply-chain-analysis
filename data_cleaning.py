@@ -89,5 +89,5 @@ for c in df.columns:
         
 df = df.rename(columns=replace_dict)
 
-# save new dataset
+
 df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
