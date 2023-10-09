@@ -90,4 +90,4 @@ for c in df.columns:
 df = df.rename(columns=replace_dict)
 
 
-df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
+df.to_parquet('data/SupplyChainDataset_cleaned.csv', index=False)
