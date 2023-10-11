@@ -21,13 +21,13 @@ In this analysis, I will be looking at the Supply Chain data of the DataCo Globa
 - Firstly, let's go back in time to 2018, close to the end of the dataset to analyse what works good and what doesn't;
 - Secondly, **SPOILER ALERT**, I will draw some conlusion on why this company failed and didn't generate more sales, based on the data presented.
 
-For this project, since the dataset is rather big, I will be using not `.csv` files, but `.parquet` files instead - I transformed the original dataset on my local device and ran it through `data_cleaning.py`, which is my program, written to clean up this dataset for further smooth analysis. I excluded some order and customer data, that I wouldn't need, deleted duplicated columns (which there were a few, but with different names) and cleaned up the column names. 
+For this project, since the dataset is rather big, I will be using not `.csv` files, but `.parquet` files instead - I transformed the original dataset on my local device and ran it through `data_cleaning.py`, which is my program, written to clean up this dataset for further smooth analysis. I excluded some order and customer data, that I wouldn't need, deleted duplicated columns (which there were a few, but with different names) and cleaned up the column names. I also translated two of the columns, Customer Country (the way United States were named was odd, hence I did it by simple dictionary), and Order Country (here I used `mtranslate` library, as there were many countries).
 
 In the notebook you can read through my exploration and my conclusions.
 
 Another thing I will present here, is **ABC analysis**. ABC analysis in supply chain management is a way to sort and prioritize things based on their importance. "A" is for the most important, "B" is for middle importance, and "C" is for the least important. It helps companies focus on what matters most for efficiency and cost. ABC analysis is useful because it helps businesses allocate resources wisely. It ensures that efforts are concentrated on crucial aspects of the supply chain, leading to better decision-making and optimized operations.
 
-Lastly, I created 3 dashboards for this dataset, representing the [general overview on the data](https://public.tableau.com/app/profile/truposzeq/viz/Supply_Chain_Analysis_Dashboard_1/Gen), [in-depth department understanting](https://public.tableau.com/app/profile/truposzeq/viz/Supply_Chain_Analysis_Dashboard_2/DPC) and [delay analysis](https://public.tableau.com/app/profile/truposzeq/viz/Supply_Chain_Analysis_Dashboard_3/Delays). I am open to any suggestions for further dashboards.
+Lastly, I created 3 dashboards for this dataset, representing the [general overview on the data](https://public.tableau.com/app/profile/truposzeq/viz/Supply_Chain_Analysis_Dashboard_1/Gen), [in-depth department understanting](https://public.tableau.com/app/profile/truposzeq/viz/Supply_Chain_Analysis_Dashboard_2/DPC) and [delay analysis](https://public.tableau.com/app/profile/truposzeq/viz/Supply_Chain_Analysis_Dashboard_3/Delays). I am planing on two or three more dashboards.
 
 
 ## Requirements
@@ -64,4 +64,6 @@ To run this project on you local machine, please follow the below steps:
 
 
 ## Usage
-This project is created for education purposes, as a portfolio analysis. Majoryti of the techniques can be apllied to other similar analysis of Supply Chains - 
+This project is created for education purposes, as a portfolio analysis. Majoryti of the techniques can be apllied to other similar analysis of Supply Chains - if you were to use any of the code provided in here, please make sure your data is structured the same way it is in this dataset, otherwise you might get some errors.
+
+## Repositoty structure

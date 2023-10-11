@@ -1,6 +1,7 @@
 # import liblaries
 import numpy as np
 import pandas as pd
+from mtranslate import translate
 import pickle
 
 # load in the data (available on Kaggle in readme, could not fit my repository, I am using locally)
@@ -76,9 +77,20 @@ df['Target shipping days'] = df['Days for shipping (real)'] - df['Days for shipm
 df = df.drop(['Days for shipping (real)', 'Days for shipment (scheduled)'], axis=1)
 
 
-# rename one of critical information (the whole Order Country is in Spanish, but we will then threat all equally)
+# translating Customer Country
 df['Customer Country'] = df['Customer Country'].replace({'EE. UU.' : 'United States'})
 
+# translating Order Country
+df['Order Country'] = df['Order Country'].astype(str)
+
+countries = df['Order Country'].unique()
+countries_eng = {}
+
+for country in countries:
+    if country not in countries_eng.keys():
+        countries_eng[country] = translate(country, 'en')
+
+df['Order Country'] = df['Order Country'].map(countries_eng)
 
 # rename columns, so that these do not have spaces
 replace_dict = {}
@@ -90,4 +102,4 @@ for c in df.columns:
 df = df.rename(columns=replace_dict)
 
 
-df.to_parquet('data/SupplyChainDataset_cleaned.csv', index=False)
+df.to_parquet('data/SupplyChainDataset_cleaned.parquet', index=False)
