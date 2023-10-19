@@ -37,7 +37,7 @@ df = df.drop(['Customer Email', 'Customer Fname', 'Customer Lname',
               'Order Zipcode', 'Product Description', 'Product Image',
               'Product Category Id', 'Category Name', 'Department Name',
               'Order Customer Id','Order Item Cardprod Id', 'Product Name',
-             'Latitude', 'Longitude', 'Delivery Status', 'Order Profit Per Order',
+             'Latitude', 'Longitude', 'Order Profit Per Order',
               'Order Item Total', 'Order Item Product Price',
               'Order City', 'Product Status', 'Order State'], axis=1)
 
